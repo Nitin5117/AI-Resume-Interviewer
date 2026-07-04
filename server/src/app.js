@@ -1,21 +1,27 @@
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+const morgan = require("morgan");
+
+const authRoutes = require("./routes/authRoutes");
+const errorMiddleware = require("./middlewares/errorMiddleware");
 
 const app = express();
 
-app.use(helmet());
 app.use(cors());
-app.use(morgan('dev'));
+// app.use(helmet());
+app.use(morgan("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok' });
+app.use("/api/auth", authRoutes);
+
+
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "AI Interview Platform API is running",
+  });
 });
+app.use(errorMiddleware);
 
 module.exports = app;
