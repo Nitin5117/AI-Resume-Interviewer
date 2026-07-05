@@ -1,4 +1,5 @@
 const interviewRepository = require("../repositories/interviewRepository");
+const geminiService = require("./geminiService");
 
 const createInterview = async (userId) => {
   const questions = [
