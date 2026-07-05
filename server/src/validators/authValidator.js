@@ -1,20 +1,19 @@
-const validate = (req, res, next) => {
-  const { name, email, password } = req.body;
+const Joi = require("joi");
 
-  if (req.path === '/register') {
-    if (!name || !email || !password) {
-      return res.status(400).json({ success: false, message: 'Name, email, and password are required' });
-    }
-  }
+const registerSchema = Joi.object({
+  firstName: Joi.string().min(2).max(50).required(),
+  lastName: Joi.string().min(2).max(50).required(),
+  username: Joi.string().min(3).max(20).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).required(),
+});
 
-  if (req.path === '/login') {
-    if (!email || !password) {
-      return res.status(400).json({ success: false, message: 'Email and password are required' });
-    }
-  }
+const loginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+});
 
-  next();
+module.exports = {
+  registerSchema,
+  loginSchema,
 };
-
-exports.register = validate;
-exports.login = validate;

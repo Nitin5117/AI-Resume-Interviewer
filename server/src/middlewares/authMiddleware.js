@@ -1,27 +1,38 @@
-const jwt = require('jsonwebtoken');
-const userRepository = require('../repositories/userRepository');
+const jwt = require("jsonwebtoken");
+const asyncHandler = require("../utils/asyncHandler");
+const AppError = require("../errors/AppError");
+const userRepository = require("../repositories/userRepository");
 
-const authMiddleware = async (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization || '';
-    const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+const protect = asyncHandler(async (req, res, next) => {
+  let token;
 
-    if (!token) {
-      return res.status(401).json({ success: false, message: 'No token provided' });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
-    const user = await userRepository.findById(decoded.id);
-
-    if (!user) {
-      return res.status(401).json({ success: false, message: 'User not found' });
-    }
-
-    req.user = user;
-    next();
-  } catch (error) {
-    return res.status(401).json({ success: false, message: 'Invalid token' });
+  // Check Authorization Header
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
   }
-};
 
-module.exports = authMiddleware;
+  if (!token) {
+    throw new AppError("Not authorized. No token provided.", 401);
+  }
+
+  // Verify Token
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+  // Find User
+  const user = await userRepository.findUserById(decoded.id);
+
+  if (!user) {
+    throw new AppError("User not found.", 401);
+  }
+
+  req.user = user;
+
+  next();
+});
+
+module.exports = {
+  protect,
+};
