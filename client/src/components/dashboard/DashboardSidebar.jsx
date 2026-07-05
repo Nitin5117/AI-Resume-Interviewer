@@ -14,12 +14,6 @@ const DashboardSidebar = () => {
         <SidebarItem to="/resume" icon={<FileText size={20} />} text="Resume" />
 
         <SidebarItem
-          to="/interview"
-          icon={<Mic size={20} />}
-          text="Interview"
-        />
-
-        <SidebarItem
           to="/report"
           icon={<BarChart3 size={20} />}
           text="Reports"

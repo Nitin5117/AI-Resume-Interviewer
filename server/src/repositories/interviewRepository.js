@@ -21,10 +21,14 @@ const updateInterview = async (id, data) => {
     new: true,
   });
 };
+const saveInterview = async (interview) => {
+  return await interview.save();
+};
 
 module.exports = {
   createInterview,
   getInterviewById,
   getUserInterviews,
   updateInterview,
+  saveInterview,
 };

@@ -16,5 +16,6 @@ router.post(
   protect,
   interviewController.evaluateInterview,
 );
+router.post("/:interviewId/answer", protect, interviewController.saveAnswer);
 
 module.exports = router;

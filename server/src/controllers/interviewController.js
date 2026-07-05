@@ -26,8 +26,12 @@ const evaluateInterview = asyncHandler(async (req, res) => {
   });
 });
 
-const getInterview = asyncHandler(async (req, res) => {
-  const interview = await interviewService.getInterview(req.params.interviewId);
+const saveAnswer = asyncHandler(async (req, res) => {
+  const interview = await interviewService.saveAnswer(
+    req.params.interviewId,
+    req.body.questionIndex,
+    req.body.answer,
+  );
 
   res.status(200).json({
     success: true,
@@ -35,12 +39,8 @@ const getInterview = asyncHandler(async (req, res) => {
   });
 });
 
-const saveAnswer = asyncHandler(async (req, res) => {
-  const interview = await interviewService.saveAnswer(
-    req.params.interviewId,
-    req.body.questionIndex,
-    req.body.answer,
-  );
+const getInterview = asyncHandler(async (req, res) => {
+  const interview = await interviewService.getInterview(req.params.interviewId);
 
   res.status(200).json({
     success: true,
