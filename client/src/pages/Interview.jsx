@@ -1,26 +1,74 @@
+import { useState } from "react";
+
 import DashboardLayout from "../components/layout/DashboardLayout";
+import InterviewHeader from "../components/interview/InterviewHeader";
+import InterviewProgress from "../components/interview/InterviewProgress";
+import QuestionCard from "../components/interview/QuestionCard";
+import AnswerBox from "../components/interview/AnswerBox";
+import FinishInterview from "../components/interview/FinishInterview";
+
+const questions = [
+  "Tell me about yourself.",
+  "Explain React Hooks.",
+  "Difference between SQL and MongoDB.",
+  "What is REST API?",
+  "Describe a challenging project.",
+];
 
 const Interview = () => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answer, setAnswer] = useState("");
+  const [answers, setAnswers] = useState([]);
+  const [finished, setFinished] = useState(false);
+
+  const handleNext = () => {
+    if (answer.trim() === "") {
+      alert("Please answer the question first.");
+      return;
+    }
+
+    const updatedAnswers = [...answers, answer];
+    setAnswers(updatedAnswers);
+
+    setAnswer("");
+
+    if (currentQuestion === questions.length - 1) {
+      setFinished(true);
+      return;
+    }
+
+    setCurrentQuestion((prev) => prev + 1);
+  };
+
+  if (finished) {
+    return (
+      <DashboardLayout>
+        <FinishInterview answers={answers} />
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout>
-      <h1 className="text-4xl font-bold">AI Mock Interview</h1>
+      <InterviewHeader />
 
-      <p className="text-slate-400 mt-2">
-        Practice with AI generated interview questions.
-      </p>
+      <InterviewProgress
+        current={currentQuestion + 1}
+        total={questions.length}
+      />
 
-      <div className="mt-10 bg-slate-900 border border-slate-800 rounded-2xl p-8">
-        <h2 className="text-2xl font-semibold">Ready to begin?</h2>
+      <QuestionCard question={questions[currentQuestion]} />
 
-        <p className="mt-4 text-slate-400">
-          The interview consists of multiple AI-generated questions. Answer them
-          one by one and receive an AI performance report.
-        </p>
+      <AnswerBox answer={answer} setAnswer={setAnswer} />
 
-        <button className="mt-8 px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-700">
-          Start Interview
-        </button>
-      </div>
+      <button
+        onClick={handleNext}
+        className="mt-8 px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700"
+      >
+        {currentQuestion === questions.length - 1
+          ? "Finish Interview"
+          : "Next Question"}
+      </button>
     </DashboardLayout>
   );
 };
