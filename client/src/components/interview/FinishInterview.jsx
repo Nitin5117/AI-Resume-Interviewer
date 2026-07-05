@@ -1,6 +1,24 @@
 import { CheckCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { evaluateInterview } from "../../services/interviewService";
 
-const FinishInterview = ({ answers }) => {
+const FinishInterview = ({ answers, interviewId }) => {
+  const navigate = useNavigate();
+
+  const handleGenerateReport = async () => {
+    try {
+      const response = await evaluateInterview(interviewId);
+
+      toast.success("Interview evaluated successfully!");
+
+      navigate(`/report/${interviewId}`);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to generate report.",
+      );
+    }
+  };
   return (
     <div className="max-w-3xl mx-auto text-center py-16">
       <CheckCircle className="mx-auto text-green-500" size={80} />
@@ -23,7 +41,10 @@ const FinishInterview = ({ answers }) => {
         ))}
       </div>
 
-      <button className="mt-8 px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700">
+      <button
+        onClick={handleGenerateReport}
+        className="mt-8 px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700"
+      >
         Generate AI Report
       </button>
     </div>

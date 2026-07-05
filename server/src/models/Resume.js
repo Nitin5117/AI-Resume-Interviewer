@@ -8,59 +8,46 @@ const resumeSchema = new mongoose.Schema(
       required: true,
     },
 
-    fileName: {
-      type: String,
-      required: true,
-    },
-
     originalName: {
       type: String,
       required: true,
     },
 
-    filePath: {
-      type: String,
-      required: true,
-    },
+    fileName: String,
 
-    fileSize: {
-      type: Number,
-      required: true,
-    },
+    filePath: String,
 
-    mimeType: {
-      type: String,
-      required: true,
-    },
+    fileSize: Number,
 
-    parsedText: {
+    extractedText: {
       type: String,
       default: "",
     },
 
-    skills: {
-      type: [String],
-      default: [],
+    status: {
+      type: String,
+      enum: ["uploaded", "analyzing", "completed", "failed"],
+      default: "uploaded",
     },
 
-    education: {
-      type: [String],
-      default: [],
-    },
+    analysis: {
+      resumeScore: {
+        type: Number,
+        default: 0,
+      },
 
-    experience: {
-      type: [String],
-      default: [],
-    },
+      atsScore: {
+        type: Number,
+        default: 0,
+      },
 
-    projects: {
-      type: [String],
-      default: [],
-    },
+      strengths: [String],
 
-    certifications: {
-      type: [String],
-      default: [],
+      missingSkills: [String],
+
+      suggestions: [String],
+
+      detectedSkills: [String],
     },
   },
   {

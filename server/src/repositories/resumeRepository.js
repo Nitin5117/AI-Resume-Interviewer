@@ -13,9 +13,15 @@ const getUserResumes = async (userId) => {
 const getResumeById = async (id) => {
   return await Resume.findById(id);
 };
+const updateResume = async (id, data) => {
+  return await Resume.findByIdAndUpdate(id, data, {
+    new: true,
+  });
+};
 
 module.exports = {
   createResume,
   getUserResumes,
   getResumeById,
+  updateResume,
 };

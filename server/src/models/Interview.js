@@ -8,9 +8,10 @@ const interviewSchema = new mongoose.Schema(
       required: true,
     },
 
-    title: {
-      type: String,
-      default: "AI Mock Interview",
+    resume: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Resume",
+      required: true,
     },
 
     questions: [
@@ -31,15 +32,15 @@ const interviewSchema = new mongoose.Schema(
       },
     ],
 
+    status: {
+      type: String,
+      enum: ["pending", "started", "completed"],
+      default: "pending",
+    },
+
     overallScore: {
       type: Number,
       default: 0,
-    },
-
-    status: {
-      type: String,
-      enum: ["pending", "completed"],
-      default: "pending",
     },
   },
   {

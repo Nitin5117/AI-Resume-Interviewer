@@ -4,8 +4,16 @@ const createInterview = async (data) => {
   return await Interview.create(data);
 };
 
-const findInterviewById = async (id) => {
-  return await Interview.findById(id);
+const getInterviewById = async (id) => {
+  return await Interview.findById(id).populate("resume").populate("user");
+};
+
+const getUserInterviews = async (userId) => {
+  return await Interview.find({
+    user: userId,
+  }).sort({
+    createdAt: -1,
+  });
 };
 
 const updateInterview = async (id, data) => {
@@ -16,6 +24,7 @@ const updateInterview = async (id, data) => {
 
 module.exports = {
   createInterview,
-  findInterviewById,
+  getInterviewById,
+  getUserInterviews,
   updateInterview,
 };

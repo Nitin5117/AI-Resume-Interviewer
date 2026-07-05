@@ -1,10 +1,7 @@
 const asyncHandler = require("../utils/asyncHandler");
-const resumeService = require("../services/resumeService");
+const resumeService = require("../services/resume/resumeService");
 
 const uploadResume = asyncHandler(async (req, res) => {
-  console.log("Upload controller reached");
-  console.log(req.file);
-  console.log(req.user);
   const resume = await resumeService.uploadResume(req.user._id, req.file);
 
   res.status(201).json({

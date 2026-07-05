@@ -43,7 +43,7 @@ const Interview = () => {
   if (finished) {
     return (
       <DashboardLayout>
-        <FinishInterview answers={answers} />
+        <FinishInterview answers={answers} interviewId={interview._id} />
       </DashboardLayout>
     );
   }
