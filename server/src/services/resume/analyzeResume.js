@@ -5,15 +5,18 @@ const analyzeResume = async (filePath) => {
   const resumeText = await extractText(filePath);
 
   if (!resumeText || resumeText.trim() === "") {
-    throw new Error("Unable to extract text from resume.");
+    throw new Error("Unable to extract text from the uploaded PDF.");
   }
 
   const analysis = await analyzeResumeAI(resumeText);
 
-  return {
-    extractedText: resumeText,
-    ...analysis,
-  };
+  if (!analysis.isResume) {
+    throw new Error(
+      analysis.message || "The uploaded file is not a valid resume.",
+    );
+  }
+
+  return analysis;
 };
 
 module.exports = analyzeResume;

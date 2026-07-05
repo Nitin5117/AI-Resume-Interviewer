@@ -1,18 +1,17 @@
-const ResumeScoreCard = ({ score = 91 }) => {
+const ResumeScoreCard = ({ analysis }) => {
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8">
-      <h2 className="text-xl font-semibold mb-6">Resume Score</h2>
-
-      <div className="flex items-center justify-between">
+    <div className="bg-slate-900 rounded-3xl p-8 border border-slate-800">
+      <div className="flex justify-between items-center">
         <div>
-          <p className="text-6xl font-bold text-indigo-500">{score}%</p>
+          <h2 className="text-2xl font-bold">Resume Score</h2>
 
-          <p className="mt-3 text-green-400">Excellent Resume</p>
-        </div>
+          <h1 className="text-6xl mt-4 font-bold text-indigo-500">
+            {analysis.analysis.resumeScore}%
+          </h1>
 
-        <div className="text-right">
-          <p className="text-slate-400">ATS Friendly</p>
-          <p className="text-2xl font-bold text-white">YES</p>
+          <p className="mt-4 text-green-400">
+            ATS Score : {analysis.analysis.atsScore}%
+          </p>
         </div>
       </div>
     </div>

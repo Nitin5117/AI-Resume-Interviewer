@@ -45,7 +45,25 @@ const resumeSchema = new mongoose.Schema(
 
       missingSkills: [String],
 
-      suggestions: [String],
+      suggestions: [
+        {
+          title: {
+            type: String,
+            required: true,
+          },
+
+          description: {
+            type: String,
+            required: true,
+          },
+
+          priority: {
+            type: String,
+            enum: ["High", "Medium", "Low"],
+            default: "Medium",
+          },
+        },
+      ],
 
       detectedSkills: [String],
     },

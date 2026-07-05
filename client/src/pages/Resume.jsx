@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import DashboardLayout from "../components/layout/DashboardLayout";
 import ResumeHeader from "../components/resume/ResumeHeader";
 import ResumeUploader from "../components/resume/ResumeUploader";
@@ -6,22 +8,28 @@ import ResumeKeywords from "../components/resume/ResumeKeywords";
 import ResumeTips from "../components/resume/ResumeTips";
 
 const Resume = () => {
+  const [analysis, setAnalysis] = useState(null);
+
   return (
     <DashboardLayout>
       <ResumeHeader />
 
       <div className="mt-8">
-        <ResumeUploader />
+        <ResumeUploader setAnalysis={setAnalysis} />
       </div>
 
-      <div className="mt-10">
-        <ResumeScoreCard />
-      </div>
+      {analysis && (
+        <>
+          <div className="mt-10">
+            <ResumeScoreCard analysis={analysis} />
+          </div>
 
-      <div className="grid md:grid-cols-2 gap-8 mt-8">
-        <ResumeKeywords />
-        <ResumeTips />
-      </div>
+          <div className="grid md:grid-cols-2 gap-8 mt-8">
+            <ResumeKeywords analysis={analysis} />
+            <ResumeTips analysis={analysis} />
+          </div>
+        </>
+      )}
     </DashboardLayout>
   );
 };

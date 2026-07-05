@@ -4,21 +4,50 @@ const analyzeResumeAI = async (resumeText) => {
   const prompt = `
 You are an expert ATS Resume Analyzer.
 
-Analyze the following resume.
+First determine whether the provided document is actually a professional resume or CV.
 
-Return ONLY valid JSON.
+If the document is NOT a resume, return ONLY this JSON:
 
 {
-  "resumeScore":90,
-  "atsScore":85,
-  "summary":"...",
-  "strengths":["..."],
-  "detectedSkills":["..."],
-  "missingSkills":["..."],
-  "suggestions":["..."]
+  "isResume": false,
+  "message": "The uploaded PDF is not a resume. Please upload a valid resume in PDF format."
 }
 
-Resume:
+If it IS a resume, return ONLY valid JSON in this format:
+
+{
+  "isResume": true,
+  "resumeScore": 0,
+  "atsScore": 0,
+  "summary": "",
+  "overallFeedback": "",
+  "strengths": [],
+  "detectedSkills": [],
+  "missingSkills": [],
+  "suggestions": [
+    {
+      "title": "",
+      "description": "",
+      "priority": "High"
+    }
+  ]
+}
+
+Rules:
+
+- Never return markdown.
+- Never wrap the response inside \`\`\`.
+- Return ONLY JSON.
+- A resume should normally contain most of these sections:
+  - Name
+  - Contact Information
+  - Education
+  - Skills
+  - Experience or Projects
+  - Certifications/Achievements
+- If these sections are mostly missing, consider it NOT a resume.
+
+Resume Text:
 
 ${resumeText}
 `;
