@@ -4,9 +4,9 @@ import { getProfile } from "../services/authService";
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   const [loading, setLoading] = useState(true);
 
@@ -20,12 +20,12 @@ const AuthProvider = ({ children }) => {
 
   const loadUser = async () => {
     try {
-      const response = await getProfile(token);
+      const response = await getProfile();
 
       setUser(response.data);
-    } catch (error) {
-      console.error(error);
 
+      localStorage.setItem("user", JSON.stringify(response.data));
+    } catch (error) {
       logout();
     } finally {
       setLoading(false);
@@ -35,6 +35,8 @@ const AuthProvider = ({ children }) => {
   const login = (jwtToken, userData) => {
     localStorage.setItem("token", jwtToken);
 
+    localStorage.setItem("user", JSON.stringify(userData));
+
     setToken(jwtToken);
 
     setUser(userData);
@@ -42,6 +44,8 @@ const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+
+    localStorage.removeItem("user");
 
     setToken(null);
 
@@ -51,8 +55,8 @@ const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        user,
         token,
+        user,
         loading,
         login,
         logout,

@@ -1,10 +1,18 @@
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import Spinner from "../ui/Spinner";
+
 import { registerUser } from "../../services/authService";
+import getErrorMessage from "../../utils/getErrorMessage";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -25,12 +33,14 @@ const RegisterForm = () => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
+    setLoading(true);
+
     try {
-      const response = await registerUser({
+      await registerUser({
         firstName: formData.firstName,
         lastName: formData.lastName,
         username: formData.username,
@@ -38,15 +48,13 @@ const RegisterForm = () => {
         password: formData.password,
       });
 
-      console.log(response);
+      toast.success("Account created successfully! Please login.");
 
-      alert("Registration Successful");
+      navigate("/login");
     } catch (error) {
-      console.log(error);
-      console.log(error.response);
-      console.log(error.response?.data);
-
-      alert(error.response?.data?.message || error.message);
+      toast.error(getErrorMessage(error));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,8 +105,8 @@ const RegisterForm = () => {
         onChange={handleChange}
       />
 
-      <Button type="submit" className="mt-3">
-        Create Account
+      <Button type="submit" className="mt-4 w-full" disabled={loading}>
+        {loading ? <Spinner /> : "Create Account"}
       </Button>
     </form>
   );

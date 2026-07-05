@@ -1,15 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 import Input from "../ui/Input";
 import Button from "../ui/Button";
+import Spinner from "../ui/Spinner";
 
 import { loginUser } from "../../services/authService";
 import useAuth from "../../hooks/useAuth";
+import getErrorMessage from "../../utils/getErrorMessage";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+
   const { login } = useAuth();
+
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -26,18 +32,20 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     try {
       const response = await loginUser(formData);
 
-      console.log(response);
-
       login(response.token, response.user);
 
-      alert("Login Successful");
+      toast.success("Login Successful");
 
       navigate("/dashboard");
     } catch (error) {
-      alert(error.response?.data?.message || error.message);
+      toast.error(getErrorMessage(error));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,8 +67,8 @@ const LoginForm = () => {
         onChange={handleChange}
       />
 
-      <Button type="submit" className="mt-4">
-        Login
+      <Button type="submit" className="mt-4 w-full" disabled={loading}>
+        {loading ? <Spinner /> : "Login"}
       </Button>
     </form>
   );

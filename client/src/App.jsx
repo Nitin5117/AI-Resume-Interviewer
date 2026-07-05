@@ -12,24 +12,32 @@ import Interview from "./pages/Interview";
 import Report from "./pages/Report";
 import History from "./pages/History";
 import Profile from "./pages/Profile";
+import PublicRoute from "./routes/PublicRoute";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
 
-      <Route path="/login" element={<Login />} />
-
-      <Route path="/register" element={<Register />} />
-
       <Route
-        path="/dashboard"
+        path="/login"
         element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
         }
       />
+
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
+
       <Route
         path="/dashboard"
         element={
@@ -83,6 +91,8 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
