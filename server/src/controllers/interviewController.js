@@ -47,10 +47,19 @@ const getInterview = asyncHandler(async (req, res) => {
     data: interview,
   });
 });
+const getInterviewHistory = asyncHandler(async (req, res) => {
+  const interviews = await interviewService.getInterviewHistory(req.user._id);
+
+  res.status(200).json({
+    success: true,
+    data: interviews,
+  });
+});
 
 module.exports = {
   createInterview,
   evaluateInterview,
   getInterview,
+  getInterviewHistory,
   saveAnswer,
 };

@@ -23,3 +23,8 @@ export const evaluateInterview = async (interviewId) => {
 
   return response.data;
 };
+export const getInterviewHistory = async () => {
+  const response = await api.get("/interview/history");
+
+  return response.data;
+};

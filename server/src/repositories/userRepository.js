@@ -15,10 +15,14 @@ const findUserByUsername = async (username) => {
 const findUserById = async (id) => {
   return await User.findById(id);
 };
+const getUserProfileById = async (userId) => {
+  return await User.findById(userId).select("-password");
+};
 
 module.exports = {
   createUser,
   findUserByEmail,
   findUserByUsername,
   findUserById,
+  getUserProfileById,
 };

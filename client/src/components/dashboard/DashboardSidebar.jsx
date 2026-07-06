@@ -1,4 +1,11 @@
-import { LayoutDashboard, FileText, Mic, BarChart3, User } from "lucide-react";
+import {
+  LayoutDashboard,
+  FileText,
+  BarChart3,
+  History,
+  User,
+} from "lucide-react";
+
 import { NavLink } from "react-router-dom";
 
 const DashboardSidebar = () => {
@@ -17,6 +24,14 @@ const DashboardSidebar = () => {
           to="/report"
           icon={<BarChart3 size={20} />}
           text="Reports"
+        />
+
+        {/* ADD THIS */}
+
+        <SidebarItem
+          to="/history"
+          icon={<History size={20} />}
+          text="History"
         />
 
         <SidebarItem to="/profile" icon={<User size={20} />} text="Profile" />
@@ -38,6 +53,7 @@ const SidebarItem = ({ icon, text, to }) => {
       }
     >
       {icon}
+
       <span>{text}</span>
     </NavLink>
   );
