@@ -5,11 +5,12 @@ const createResume = async (resumeData) => {
 };
 
 const getUserResumes = async (userId) => {
-  return await Resume.find({ user: userId }).sort({
-    createdAt: -1,
+  return Resume.find({
+    user: userId,
+  }).sort({
+    updatedAt: -1,
   });
 };
-
 const getResumeById = async (id) => {
   return await Resume.findById(id);
 };

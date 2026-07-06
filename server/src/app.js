@@ -7,6 +7,7 @@ const authRoutes = require("./routes/authRoutes");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const resumeRoutes = require("./routes/resumeRoutes");
 const interviewRoutes = require("./routes/interviewRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 const app = express();
 

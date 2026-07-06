@@ -9,10 +9,10 @@ const getInterviewById = async (id) => {
 };
 
 const getUserInterviews = async (userId) => {
-  return await Interview.find({
+  return Interview.find({
     user: userId,
   }).sort({
-    createdAt: -1,
+    updatedAt: -1,
   });
 };
 
@@ -24,18 +24,11 @@ const updateInterview = async (id, data) => {
 const saveInterview = async (interview) => {
   return await interview.save();
 };
-const getUserInterviews = async (userId) => {
-  return Interview.find({
-    user: userId,
-  }).sort({
-    updatedAt: -1,
-  });
-};
+
 module.exports = {
   createInterview,
   getInterviewById,
   getUserInterviews,
   updateInterview,
   saveInterview,
-  getUserInterviews,
 };
