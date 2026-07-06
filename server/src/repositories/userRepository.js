@@ -18,6 +18,12 @@ const findUserById = async (id) => {
 const getUserProfileById = async (userId) => {
   return await User.findById(userId).select("-password");
 };
+const updateUserById = async (userId, updateData) => {
+  return await User.findByIdAndUpdate(userId, updateData, {
+    new: true,
+    runValidators: true,
+  }).select("-password");
+};
 
 module.exports = {
   createUser,
@@ -25,4 +31,5 @@ module.exports = {
   findUserByUsername,
   findUserById,
   getUserProfileById,
+  updateUserById,
 };

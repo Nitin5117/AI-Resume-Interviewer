@@ -5,11 +5,22 @@ const createInterview = async (data) => {
 };
 
 const getInterviewById = async (id) => {
-  return await Interview.findById(id).populate("resume").populate("user");
+  return await Interview.findById(id)
+    .populate("resume")
+    .populate("user");
+};
+
+const getOwnedInterview = async (userId, interviewId) => {
+  return await Interview.findOne({
+    _id: interviewId,
+    user: userId,
+  })
+    .populate("resume")
+    .populate("user");
 };
 
 const getUserInterviews = async (userId) => {
-  return Interview.find({
+  return await Interview.find({
     user: userId,
   }).sort({
     updatedAt: -1,
@@ -21,6 +32,7 @@ const updateInterview = async (id, data) => {
     new: true,
   });
 };
+
 const saveInterview = async (interview) => {
   return await interview.save();
 };
@@ -28,6 +40,7 @@ const saveInterview = async (interview) => {
 module.exports = {
   createInterview,
   getInterviewById,
+  getOwnedInterview,
   getUserInterviews,
   updateInterview,
   saveInterview,
