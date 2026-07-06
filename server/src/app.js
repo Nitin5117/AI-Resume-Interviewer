@@ -19,6 +19,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/interview", interviewRoutes);
 
+app.use("/api/dashboard", dashboardRoutes);
+
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     success: true,

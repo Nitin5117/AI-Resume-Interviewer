@@ -1,25 +1,49 @@
 const interviewRepository = require("../../repositories/interviewRepository");
-const evaluateAnswer = require("../ai/evaluationAI");
+const AppError = require("../../errors/AppError");
+const evaluateInterviewAI = require("../ai/evaluationAI");
 
 const evaluateInterview = async (interviewId) => {
   const interview = await interviewRepository.getInterviewById(interviewId);
 
   if (!interview) {
-    throw new Error("Interview not found.");
+    throw new AppError("Interview not found.", 404);
   }
 
-  let totalScore = 0;
+  const unanswered = interview.questions.find(
+    (q) => !q.answer || !q.answer.trim(),
+  );
 
-  for (const question of interview.questions) {
-    const result = await evaluateAnswer(question.question, question.answer);
-
-    question.score = result.score;
-    question.feedback = result.feedback;
-
-    totalScore += result.score;
+  if (unanswered) {
+    throw new AppError("Please answer all questions first.", 400);
   }
 
-  interview.overallScore = totalScore / interview.questions.length;
+  const report = await evaluateInterviewAI(interview.questions);
+
+  interview.overallScore = report.overallScore;
+
+  interview.report = {
+    summary: report.summary,
+    communication: report.communication,
+    technicalKnowledge: report.technicalKnowledge,
+    problemSolving: report.problemSolving,
+    confidence: report.confidence,
+    strengths: report.strengths,
+    weaknesses: report.weaknesses,
+    recommendations: report.recommendations,
+    hiringDecision: report.hiringDecision,
+  };
+
+  // ⭐ Save per-question evaluation
+
+  if (report.questions) {
+    report.questions.forEach((item, index) => {
+      if (interview.questions[index]) {
+        interview.questions[index].score = item.score;
+
+        interview.questions[index].feedback = item.feedback;
+      }
+    });
+  }
 
   interview.status = "completed";
 

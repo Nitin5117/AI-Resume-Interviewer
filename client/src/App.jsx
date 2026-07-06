@@ -66,7 +66,7 @@ function App() {
       />
 
       <Route
-        path="/report"
+        path="/report/:interviewId"
         element={
           <ProtectedRoute>
             <Report />

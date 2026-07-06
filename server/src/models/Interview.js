@@ -16,18 +16,24 @@ const interviewSchema = new mongoose.Schema(
 
     questions: [
       {
-        question: String,
+        question: {
+          type: String,
+          required: true,
+        },
+
         answer: {
           type: String,
           default: "",
         },
-        feedback: {
-          type: String,
-          default: "",
-        },
+
         score: {
           type: Number,
           default: 0,
+        },
+
+        feedback: {
+          type: String,
+          default: "",
         },
       },
     ],
@@ -41,6 +47,53 @@ const interviewSchema = new mongoose.Schema(
     overallScore: {
       type: Number,
       default: 0,
+    },
+
+    report: {
+      summary: {
+        type: String,
+        default: "",
+      },
+
+      communication: {
+        type: Number,
+        default: 0,
+      },
+
+      technicalKnowledge: {
+        type: Number,
+        default: 0,
+      },
+
+      problemSolving: {
+        type: Number,
+        default: 0,
+      },
+
+      confidence: {
+        type: Number,
+        default: 0,
+      },
+
+      strengths: {
+        type: [String],
+        default: [],
+      },
+
+      weaknesses: {
+        type: [String],
+        default: [],
+      },
+
+      recommendations: {
+        type: [String],
+        default: [],
+      },
+
+      hiringDecision: {
+        type: String,
+        default: "",
+      },
     },
   },
   {
