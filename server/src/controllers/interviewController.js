@@ -1,78 +1,66 @@
-const asyncHandler = require("../utils/asyncHandler");
-const interviewService = require("../services/interview/interviewService");
+const asyncHandler = require('../utils/asyncHandler')
+const interviewService = require('../services/interview/interviewService')
 
 const createInterview = asyncHandler(async (req, res) => {
-  const interview =
-    await interviewService.createInterview(
-      req.user._id,
-      req.params.resumeId,
-    );
+  const interview = await interviewService.createInterview(req.user._id, req.params.resumeId)
 
   res.status(201).json({
     success: true,
-    message: "Interview created successfully.",
+    message: 'Interview created successfully.',
     data: interview,
-  });
-});
+  })
+})
 
-const evaluateInterview = asyncHandler(
-  async (req, res) => {
-    const interview =
-      await interviewService.evaluateInterview(
-        req.user._id,
-        req.params.interviewId,
-      );
+const evaluateInterview = asyncHandler(async (req, res) => {
+  const interview = await interviewService.evaluateInterview(req.user._id, req.params.interviewId)
 
-    res.status(200).json({
-      success: true,
-      message:
-        "Interview evaluated successfully.",
-      data: interview,
-    });
-  },
-);
+  res.status(200).json({
+    success: true,
+    message: 'Interview evaluated successfully.',
+    data: interview,
+  })
+})
 
 const saveAnswer = asyncHandler(async (req, res) => {
-  const interview =
-    await interviewService.saveAnswer(
-      req.user._id,
-      req.params.interviewId,
-      req.body.questionIndex,
-      req.body.answer,
-    );
+  const interview = await interviewService.saveAnswer(
+    req.user._id,
+    req.params.interviewId,
+    req.body.questionIndex,
+    req.body.answer
+  )
 
   res.status(200).json({
     success: true,
     data: interview,
-  });
-});
+  })
+})
 
 const getInterview = asyncHandler(async (req, res) => {
-  const interview =
-    await interviewService.getInterview(
-      req.user._id,
-      req.params.interviewId,
-    );
+  const interview = await interviewService.getInterview(req.user._id, req.params.interviewId)
 
   res.status(200).json({
     success: true,
     data: interview,
-  });
-});
+  })
+})
 
-const getInterviewHistory = asyncHandler(
-  async (req, res) => {
-    const interviews =
-      await interviewService.getInterviewHistory(
-        req.user._id,
-      );
+const getInterviewHistory = asyncHandler(async (req, res) => {
+  const interviews = await interviewService.getInterviewHistory(req.user._id)
 
-    res.status(200).json({
-      success: true,
-      data: interviews,
-    });
-  },
-);
+  res.status(200).json({
+    success: true,
+    data: interviews,
+  })
+})
+
+const deleteInterview = asyncHandler(async (req, res) => {
+  const result = await interviewService.deleteInterview(req.user._id, req.params.interviewId)
+
+  res.status(200).json({
+    success: true,
+    message: result.message,
+  })
+})
 
 module.exports = {
   createInterview,
@@ -80,4 +68,5 @@ module.exports = {
   getInterview,
   getInterviewHistory,
   saveAnswer,
-};
+  deleteInterview,
+}

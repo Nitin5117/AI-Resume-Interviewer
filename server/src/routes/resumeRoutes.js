@@ -1,41 +1,20 @@
-const express = require("express");
+const express = require('express')
 
-const router = express.Router();
+const router = express.Router()
 
-const upload = require(
-  "../middlewares/uploadMiddleware",
-);
+const upload = require('../middlewares/uploadMiddleware')
 
-const {
-  protect,
-} = require("../middlewares/authMiddleware");
+const { protect } = require('../middlewares/authMiddleware')
 
-const {
-  validateObjectId,
-} = require("../middlewares/validationMiddleware");
+const { validateObjectId } = require('../middlewares/validationMiddleware')
 
-const resumeController = require(
-  "../controllers/resumeController",
-);
+const resumeController = require('../controllers/resumeController')
 
-router.post(
-  "/upload",
-  protect,
-  upload.single("resume"),
-  resumeController.uploadResume,
-);
+router.post('/upload', protect, upload.single('resume'), resumeController.uploadResume)
 
-router.get(
-  "/my-resumes",
-  protect,
-  resumeController.getUserResumes,
-);
+router.get('/my-resumes', protect, resumeController.getUserResumes)
 
-router.get(
-  "/:resumeId",
-  protect,
-  validateObjectId("resumeId"),
-  resumeController.getResume,
-);
+router.get('/:resumeId', protect, validateObjectId('resumeId'), resumeController.getResume)
+router.delete('/:resumeId', protect, resumeController.deleteResume)
 
-module.exports = router;
+module.exports = router

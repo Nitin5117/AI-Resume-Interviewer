@@ -1,53 +1,47 @@
-const express = require("express");
+const express = require('express')
 
-const router = express.Router();
+const router = express.Router()
 
-const {
-  protect,
-} = require("../middlewares/authMiddleware");
+const { protect } = require('../middlewares/authMiddleware')
 
-const {
-  validateObjectId,
-  validateAnswer,
-} = require("../middlewares/validationMiddleware");
+const { validateObjectId, validateAnswer } = require('../middlewares/validationMiddleware')
 
-const interviewController = require(
-  "../controllers/interviewController",
-);
+const interviewController = require('../controllers/interviewController')
 
 router.post(
-  "/create/:resumeId",
+  '/create/:resumeId',
   protect,
-  validateObjectId("resumeId"),
-  interviewController.createInterview,
-);
+  validateObjectId('resumeId'),
+  interviewController.createInterview
+)
+
+router.get('/history', protect, interviewController.getInterviewHistory)
+
+router.post(
+  '/evaluate/:interviewId',
+  protect,
+  validateObjectId('interviewId'),
+  interviewController.evaluateInterview
+)
+
+router.post(
+  '/:interviewId/answer',
+  protect,
+  validateObjectId('interviewId'),
+  validateAnswer,
+  interviewController.saveAnswer
+)
 
 router.get(
-  "/history",
+  '/:interviewId',
   protect,
-  interviewController.getInterviewHistory,
-);
-
-router.post(
-  "/evaluate/:interviewId",
+  validateObjectId('interviewId'),
+  interviewController.getInterview
+)
+router.delete(
+  '/:interviewId',
   protect,
-  validateObjectId("interviewId"),
-  interviewController.evaluateInterview,
-);
-
-router.post(
-  "/:interviewId/answer",
-  protect,
-  validateObjectId("interviewId"),
-  validateAnswer,
-  interviewController.saveAnswer,
-);
-
-router.get(
-  "/:interviewId",
-  protect,
-  validateObjectId("interviewId"),
-  interviewController.getInterview,
-);
-
-module.exports = router;
+  validateObjectId('interviewId'),
+  interviewController.deleteInterview
+)
+module.exports = router
