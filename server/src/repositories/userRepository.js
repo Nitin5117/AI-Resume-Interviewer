@@ -5,24 +5,51 @@ const createUser = async (userData) => {
 };
 
 const findUserByEmail = async (email) => {
-  return await User.findOne({ email }).select("+password");
+  return await User.findOne({
+    email,
+  }).select("+password");
 };
 
 const findUserByUsername = async (username) => {
-  return await User.findOne({ username });
+  return await User.findOne({
+    username,
+  });
 };
 
 const findUserById = async (id) => {
   return await User.findById(id);
 };
+
 const getUserProfileById = async (userId) => {
-  return await User.findById(userId).select("-password");
+  return await User.findById(userId).select(
+    "-password",
+  );
 };
-const updateUserById = async (userId, updateData) => {
-  return await User.findByIdAndUpdate(userId, updateData, {
-    new: true,
-    runValidators: true,
-  }).select("-password");
+
+const findExistingUserByEmail = async (
+  email,
+  excludeUserId,
+) => {
+  return await User.findOne({
+    email,
+    _id: {
+      $ne: excludeUserId,
+    },
+  });
+};
+
+const updateUserById = async (
+  userId,
+  updateData,
+) => {
+  return await User.findByIdAndUpdate(
+    userId,
+    updateData,
+    {
+      new: true,
+      runValidators: true,
+    },
+  ).select("-password");
 };
 
 module.exports = {
@@ -31,5 +58,6 @@ module.exports = {
   findUserByUsername,
   findUserById,
   getUserProfileById,
+  findExistingUserByEmail,
   updateUserById,
 };

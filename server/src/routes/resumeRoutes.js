@@ -2,13 +2,22 @@ const express = require("express");
 
 const router = express.Router();
 
-const upload = require("../middlewares/uploadMiddleware");
-const { protect } = require("../middlewares/authMiddleware");
+const upload = require(
+  "../middlewares/uploadMiddleware",
+);
 
-// Import controller correctly
-const resumeController = require("../controllers/resumeController");
+const {
+  protect,
+} = require("../middlewares/authMiddleware");
 
-// Upload Resume
+const {
+  validateObjectId,
+} = require("../middlewares/validationMiddleware");
+
+const resumeController = require(
+  "../controllers/resumeController",
+);
+
 router.post(
   "/upload",
   protect,
@@ -16,7 +25,17 @@ router.post(
   resumeController.uploadResume,
 );
 
-// Get User Resumes
-router.get("/my-resumes", protect, resumeController.getUserResumes);
+router.get(
+  "/my-resumes",
+  protect,
+  resumeController.getUserResumes,
+);
+
+router.get(
+  "/:resumeId",
+  protect,
+  validateObjectId("resumeId"),
+  resumeController.getResume,
+);
 
 module.exports = router;

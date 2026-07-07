@@ -1,4 +1,6 @@
-const model = require("./geminiClient");
+const {
+  generateJSON,
+} = require("./geminiClient");
 
 const analyzeResumeAI = async (resumeText) => {
   const prompt = `
@@ -52,16 +54,7 @@ Resume Text:
 ${resumeText}
 `;
 
-  const result = await model.generateContent(prompt);
-
-  let response = result.response.text();
-
-  response = response
-    .replace(/```json/g, "")
-    .replace(/```/g, "")
-    .trim();
-
-  return JSON.parse(response);
+  return await generateJSON(prompt);
 };
 
 module.exports = analyzeResumeAI;

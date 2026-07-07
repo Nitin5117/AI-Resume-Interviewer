@@ -1,19 +1,19 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from 'react-router-dom'
 
-import Landing from "./pages/Landing";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Landing from './pages/Landing'
+import Login from './pages/Login'
+import Register from './pages/Register'
 
-import ProtectedRoute from "./routes/ProtectedRoute";
+import ProtectedRoute from './routes/ProtectedRoute'
 
-import Dashboard from "./pages/Dashboard";
-import Resume from "./pages/Resume";
-import Interview from "./pages/Interview";
-import Report from "./pages/Report";
-import History from "./pages/History";
-import Profile from "./pages/Profile";
-import PublicRoute from "./routes/PublicRoute";
-import NotFound from "./pages/NotFound";
+import Dashboard from './pages/Dashboard'
+import Resume from './pages/Resume'
+import Interview from './pages/Interview'
+import Report from './pages/Report'
+import History from './pages/History'
+import Profile from './pages/Profile'
+import PublicRoute from './routes/PublicRoute'
+import NotFound from './pages/NotFound'
 
 function App() {
   return (
@@ -57,6 +57,14 @@ function App() {
       />
 
       <Route
+        path="/resume/:resumeId"
+        element={
+          <ProtectedRoute>
+            <Resume />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/interview/:interviewId"
         element={
           <ProtectedRoute>
@@ -94,7 +102,7 @@ function App() {
 
       <Route path="*" element={<NotFound />} />
     </Routes>
-  );
+  )
 }
 
-export default App;
+export default App

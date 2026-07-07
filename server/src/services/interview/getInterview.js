@@ -1,8 +1,11 @@
 const interviewRepository = require("../../repositories/interviewRepository");
 const AppError = require("../../errors/AppError");
 
-const getInterview = async (interviewId) => {
-  const interview = await interviewRepository.getInterviewById(interviewId);
+const getInterview = async (userId, interviewId) => {
+  const interview = await interviewRepository.getOwnedInterview(
+    userId,
+    interviewId,
+  );
 
   if (!interview) {
     throw new AppError("Interview not found.", 404);

@@ -40,7 +40,13 @@ const interviewSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["pending", "started", "completed"],
+      enum: [
+        "pending",
+        "started",
+        "evaluating",
+        "completed",
+        "failed",
+      ],
       default: "pending",
     },
 
@@ -101,4 +107,7 @@ const interviewSchema = new mongoose.Schema(
   },
 );
 
-module.exports = mongoose.model("Interview", interviewSchema);
+module.exports = mongoose.model(
+  "Interview",
+  interviewSchema,
+);

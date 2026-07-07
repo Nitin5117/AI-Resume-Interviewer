@@ -1,15 +1,16 @@
-const model = require("./geminiClient");
-const AppError = require("../../errors/AppError");
+const {
+  generateJSON,
+} = require("./geminiClient");
 
 const evaluateInterviewAI = async (questions) => {
   const interviewText = questions
     .map(
-      (q, index) => `
+      (question, index) => `
 Question ${index + 1}:
-${q.question}
+${question.question}
 
 Candidate Answer:
-${q.answer}
+${question.answer}
 `,
     )
     .join("\n--------------------------\n");
@@ -65,27 +66,7 @@ Interview:
 ${interviewText}
 `;
 
-  try {
-    const result = await model.generateContent(prompt);
-
-    let response = result.response.text();
-
-    response = response
-      .replace(/```json/g, "")
-      .replace(/```/g, "")
-      .trim();
-
-    return JSON.parse(response);
-  } catch (error) {
-    if (error.status === 429) {
-      throw new AppError(
-        "Gemini API quota exceeded. Please try again later.",
-        429,
-      );
-    }
-
-    throw new AppError("Failed to evaluate interview.", 500);
-  }
+  return await generateJSON(prompt);
 };
 
 module.exports = evaluateInterviewAI;

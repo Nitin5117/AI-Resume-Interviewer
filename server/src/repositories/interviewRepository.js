@@ -10,7 +10,10 @@ const getInterviewById = async (id) => {
     .populate("user");
 };
 
-const getOwnedInterview = async (userId, interviewId) => {
+const getOwnedInterview = async (
+  userId,
+  interviewId,
+) => {
   return await Interview.findOne({
     _id: interviewId,
     user: userId,
@@ -27,10 +30,61 @@ const getUserInterviews = async (userId) => {
   });
 };
 
-const updateInterview = async (id, data) => {
-  return await Interview.findByIdAndUpdate(id, data, {
-    new: true,
+const findActiveInterviewByResume = async (
+  userId,
+  resumeId,
+) => {
+  return await Interview.findOne({
+    user: userId,
+    resume: resumeId,
+    status: {
+      $in: ["pending", "started"],
+    },
+    questions: {
+      $elemMatch: {
+        answer: "",
+      },
+    },
+  }).sort({
+    createdAt: -1,
   });
+};
+
+const startEvaluation = async (
+  userId,
+  interviewId,
+) => {
+  return await Interview.findOneAndUpdate(
+    {
+      _id: interviewId,
+      user: userId,
+      status: {
+        $in: [
+          "pending",
+          "started",
+          "failed",
+        ],
+      },
+    },
+    {
+      $set: {
+        status: "evaluating",
+      },
+    },
+    {
+      new: true,
+    },
+  );
+};
+
+const updateInterview = async (id, data) => {
+  return await Interview.findByIdAndUpdate(
+    id,
+    data,
+    {
+      new: true,
+    },
+  );
 };
 
 const saveInterview = async (interview) => {
@@ -42,6 +96,8 @@ module.exports = {
   getInterviewById,
   getOwnedInterview,
   getUserInterviews,
+  findActiveInterviewByResume,
+  startEvaluation,
   updateInterview,
   saveInterview,
 };

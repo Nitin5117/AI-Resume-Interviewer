@@ -1,6 +1,10 @@
-const model = require("./geminiClient");
+const {
+  generateJSON,
+} = require("./geminiClient");
 
-const generateInterviewQuestions = async (resumeText) => {
+const generateInterviewQuestions = async (
+  resumeText,
+) => {
   const prompt = `
 You are an experienced technical interviewer.
 
@@ -30,16 +34,7 @@ Resume:
 ${resumeText}
 `;
 
-  const result = await model.generateContent(prompt);
-
-  let response = result.response.text();
-
-  response = response
-    .replace(/```json/g, "")
-    .replace(/```/g, "")
-    .trim();
-
-  return JSON.parse(response);
+  return await generateJSON(prompt);
 };
 
 module.exports = generateInterviewQuestions;

@@ -27,33 +27,40 @@ const getDashboard = async (userId) => {
             (interview) => interview.overallScore || 0,
           ),
         );
-
+ 
   const latestResume =
-    resumes.length > 0 ? resumes[0]?.analysis?.resumeScore || 0 : 0;
+  resumes.length > 0
+    ? resumes[0]?.analysis?.resumeScore || 0
+    : 0;
 
-  return {
-    totalResumes: resumes.length,
+  const latestResumeId =
+  resumes.length > 0
+    ? resumes[0]._id
+    : null;
+  
+    return {
+  totalResumes: resumes.length,
 
-    totalInterviews: interviews.length,
+  totalInterviews: interviews.length,
 
-    completedInterviews: completedInterviews.length,
+  completedInterviews: completedInterviews.length,
 
-    averageScore,
+  averageScore,
 
-    bestScore,
+  bestScore,
 
-    latestResume,
+  latestResume,
 
-    // Only for Recent Interviews UI
-    recentInterviews: completedInterviews.slice(0, 5),
+  latestResumeId,
 
-    // For Performance Trend Chart
-    performanceHistory: completedInterviews.map((interview) => ({
-      _id: interview._id,
-      overallScore: interview.overallScore,
-      createdAt: interview.createdAt,
-    })),
+  recentInterviews: completedInterviews.slice(0, 5),
+
+  performanceHistory: completedInterviews.map((interview) => ({
+    _id: interview._id,
+    overallScore: interview.overallScore,
+    createdAt: interview.createdAt,
+  })),
   };
-};
+}
 
 module.exports = getDashboard;
