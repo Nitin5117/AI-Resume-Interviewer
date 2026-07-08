@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 const AppError = require('../../errors/AppError')
 const resumeRepository = require('../../repositories/resumeRepository')
 const analyzeResume = require('./analyzeResume')
@@ -8,22 +10,23 @@ const uploadResume = async (userId, file) => {
     throw new AppError('Resume file is required.', 400)
   }
 
-  const resume = await resumeRepository.createResume({
-    user: userId,
-    originalName: file.originalname,
-    fileName: file.filename,
-    filePath: file.path,
-    fileSize: file.size,
-    status: 'uploaded',
-  })
+  let resume
 
   try {
-    await resumeRepository.updateResume(resume._id, {
+    // Create resume document
+    resume = await resumeRepository.createResume({
+      user: userId,
+      originalName: file.originalname,
+      fileName: file.filename,
+      filePath: file.path,
+      fileSize: file.size,
       status: 'analyzing',
     })
 
+    // Analyze resume using AI
     const analysis = await analyzeResume(file.path)
 
+    // Save analysis
     const updatedResume = await resumeRepository.updateResume(resume._id, {
       extractedText: analysis.extractedText || '',
       analysis,
@@ -32,9 +35,21 @@ const uploadResume = async (userId, file) => {
 
     return updatedResume
   } catch (error) {
-    await resumeRepository.updateResume(resume._id, {
-      status: 'failed',
-    })
+    console.error('Resume analysis failed:', error.message)
+
+    try {
+      // Delete uploaded PDF
+      if (file?.path && fs.existsSync(file.path)) {
+        fs.unlinkSync(file.path)
+      }
+
+      // Delete MongoDB document
+      if (resume?._id) {
+        await resumeRepository.deleteResume(resume._id)
+      }
+    } catch (cleanupError) {
+      console.error('Resume cleanup failed:', cleanupError)
+    }
 
     throw error
   }

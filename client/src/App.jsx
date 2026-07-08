@@ -14,6 +14,8 @@ import History from './pages/History'
 import Profile from './pages/Profile'
 import PublicRoute from './routes/PublicRoute'
 import NotFound from './pages/NotFound'
+import InterviewInstructions from './pages/InterviewInstructions'
+import InterviewSetup from './pages/InterviewSetup'
 
 function App() {
   return (
@@ -64,11 +66,28 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+        path="/interview/setup/:resumeId"
+        element={
+          <ProtectedRoute>
+            <InterviewSetup />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/interview/:interviewId"
         element={
           <ProtectedRoute>
             <Interview />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/interview/start/:interviewId"
+        element={
+          <ProtectedRoute>
+            <InterviewInstructions />
           </ProtectedRoute>
         }
       />

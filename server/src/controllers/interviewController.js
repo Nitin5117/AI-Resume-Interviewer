@@ -1,8 +1,14 @@
 const asyncHandler = require('../utils/asyncHandler')
+
 const interviewService = require('../services/interview/interviewService')
+const startInterview = require('../services/interview/startInterview')
 
 const createInterview = asyncHandler(async (req, res) => {
-  const interview = await interviewService.createInterview(req.user._id, req.params.resumeId)
+  const interview = await interviewService.createInterview(
+    req.user._id,
+    req.params.resumeId,
+    req.body
+  )
 
   res.status(201).json({
     success: true,
@@ -62,6 +68,16 @@ const deleteInterview = asyncHandler(async (req, res) => {
   })
 })
 
+const startInterviewController = asyncHandler(async (req, res) => {
+  const interview = await startInterview(req.user._id, req.params.interviewId)
+
+  res.status(200).json({
+    success: true,
+    message: 'Interview started successfully.',
+    data: interview,
+  })
+})
+
 module.exports = {
   createInterview,
   evaluateInterview,
@@ -69,4 +85,5 @@ module.exports = {
   getInterviewHistory,
   saveAnswer,
   deleteInterview,
+  startInterviewController,
 }

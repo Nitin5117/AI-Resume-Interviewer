@@ -1,7 +1,8 @@
 import api from './api'
 
-export const createInterview = async resumeId => {
-  const response = await api.post(`/interview/create/${resumeId}`)
+export const createInterview = async (resumeId, settings) => {
+  const response = await api.post(`/interview/create/${resumeId}`, settings)
+
   return response.data
 }
 
@@ -30,6 +31,11 @@ export const getInterviewHistory = async () => {
 }
 export const deleteInterview = async interviewId => {
   const response = await api.delete(`/interview/${interviewId}`)
+
+  return response.data
+}
+export const startInterview = async interviewId => {
+  const response = await api.patch(`/interview/start/${interviewId}`)
 
   return response.data
 }

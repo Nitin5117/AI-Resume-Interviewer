@@ -11,31 +11,9 @@ const ResumeScoreCard = ({ analysis }) => {
 
   const [loading, setLoading] = useState(false)
 
-  const handleStartInterview = async () => {
-    try {
-      setLoading(true)
-
-      const response = await createInterview(analysis._id)
-
-      console.log('Interview Response:', response)
-
-      toast.success('Interview created successfully!')
-
-      if (!response.data?._id) {
-        toast.error('Interview ID not found.')
-        return
-      }
-
-      navigate(`/interview/${response.data._id}`)
-    } catch (error) {
-      console.error(error)
-
-      toast.error(error.response?.data?.message || 'Failed to start interview.')
-    } finally {
-      setLoading(false)
-    }
+  const handleStartInterview = () => {
+    navigate(`/interview/setup/${analysis._id}`)
   }
-
   return (
     <div className="rounded-[2rem] border border-slate-800 bg-slate-950/90 p-8 shadow-xl">
       <div className="grid gap-8 xl:grid-cols-[1.35fr_0.65fr] xl:items-center">

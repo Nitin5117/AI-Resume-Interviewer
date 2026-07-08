@@ -1,17 +1,47 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const interviewSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
 
     resume: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Resume",
+      ref: 'Resume',
       required: true,
+    },
+    company: {
+      type: String,
+      default: 'General',
+    },
+
+    role: {
+      type: String,
+      default: 'Software Engineer',
+    },
+
+    difficulty: {
+      type: String,
+      enum: ['Easy', 'Medium', 'Hard'],
+      default: 'Medium',
+    },
+
+    experience: {
+      type: String,
+      default: 'Fresher',
+    },
+
+    focus: {
+      type: String,
+      default: 'Mixed',
+    },
+
+    personality: {
+      type: String,
+      default: 'Professional',
     },
 
     questions: [
@@ -23,7 +53,7 @@ const interviewSchema = new mongoose.Schema(
 
         answer: {
           type: String,
-          default: "",
+          default: '',
         },
 
         score: {
@@ -33,21 +63,27 @@ const interviewSchema = new mongoose.Schema(
 
         feedback: {
           type: String,
-          default: "",
+          default: '',
         },
       },
     ],
 
     status: {
       type: String,
-      enum: [
-        "pending",
-        "started",
-        "evaluating",
-        "completed",
-        "failed",
-      ],
-      default: "pending",
+      enum: ['pending', 'started', 'evaluating', 'completed', 'failed'],
+      default: 'pending',
+    },
+    startedAt: {
+      type: Date,
+    },
+
+    completedAt: {
+      type: Date,
+    },
+
+    durationInSeconds: {
+      type: Number,
+      default: 0,
     },
 
     overallScore: {
@@ -58,7 +94,7 @@ const interviewSchema = new mongoose.Schema(
     report: {
       summary: {
         type: String,
-        default: "",
+        default: '',
       },
 
       communication: {
@@ -98,16 +134,13 @@ const interviewSchema = new mongoose.Schema(
 
       hiringDecision: {
         type: String,
-        default: "",
+        default: '',
       },
     },
   },
   {
     timestamps: true,
-  },
-);
+  }
+)
 
-module.exports = mongoose.model(
-  "Interview",
-  interviewSchema,
-);
+module.exports = mongoose.model('Interview', interviewSchema)

@@ -44,4 +44,5 @@ router.delete(
   validateObjectId('interviewId'),
   interviewController.deleteInterview
 )
+router.patch('/start/:interviewId', protect, interviewController.startInterviewController)
 module.exports = router
