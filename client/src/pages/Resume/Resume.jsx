@@ -27,8 +27,6 @@ const Resume = () => {
       try {
         const response = await getResume(resumeId)
 
-        console.log('Resume Response:', response)
-
         // Store the complete resume document
         setAnalysis(response.data)
       } catch (error) {

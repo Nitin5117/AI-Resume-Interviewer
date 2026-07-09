@@ -103,8 +103,7 @@ const InterviewSetup = () => {
         toast.error('Please enter a role.')
         return
       }
-      console.log('Resume ID:', resumeId)
-      console.log('Settings:', finalSettings)
+
       const response = await createInterview(resumeId, finalSettings)
       toast.success('Interview Created')
 

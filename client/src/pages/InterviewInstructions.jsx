@@ -16,11 +16,7 @@ const InterviewInstructions = () => {
 
   const handleStart = async () => {
     try {
-      console.log('1. Button clicked')
-
       const response = await startInterview(interviewId)
-
-      console.log('2. API Response:', response)
 
       navigate(`/interview/${interviewId}`)
     } catch (error) {

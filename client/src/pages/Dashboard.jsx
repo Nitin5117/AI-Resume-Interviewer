@@ -27,8 +27,6 @@ const Dashboard = () => {
       try {
         const response = await getDashboard()
 
-        console.log('Dashboard Response:', response)
-
         setDashboard(response.data)
       } catch (error) {
         console.error('Dashboard Error:', error)
