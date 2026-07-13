@@ -1,33 +1,46 @@
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const morgan = require("morgan");
+const express = require('express')
+const cors = require('cors')
+const helmet = require('helmet')
+const morgan = require('morgan')
 
-const authRoutes = require("./routes/authRoutes");
-const errorMiddleware = require("./middlewares/errorMiddleware");
-const resumeRoutes = require("./routes/resumeRoutes");
-const interviewRoutes = require("./routes/interviewRoutes");
-const dashboardRoutes = require("./routes/dashboardRoutes");
-const profileRoutes = require("./routes/profileRoutes");
-const app = express();
+const authRoutes = require('./routes/authRoutes')
+const resumeRoutes = require('./routes/resumeRoutes')
+const interviewRoutes = require('./routes/interviewRoutes')
+const dashboardRoutes = require('./routes/dashboardRoutes')
+const profileRoutes = require('./routes/profileRoutes')
 
-app.use(cors());
-// app.use(helmet());
-app.use(morgan("dev"));
-app.use(express.json());
+const errorMiddleware = require('./middlewares/errorMiddleware')
 
-app.use("/api/auth", authRoutes);
-app.use("/api/resume", resumeRoutes);
-app.use("/api/interview", interviewRoutes);
-app.use("/api/dashboard", dashboardRoutes);
-app.use("/api/profile", profileRoutes);
+const app = express()
 
-app.get("/api/health", (req, res) => {
+app.use(cors())
+
+app.use(helmet())
+
+app.use(morgan('dev'))
+
+app.use(express.json())
+
+app.get('/', (req, res) => {
   res.status(200).json({
     success: true,
-    message: "AI Interview Platform API is running",
-  });
-});
-app.use(errorMiddleware);
+    message: 'AI Interview Platform API is running 🚀',
+  })
+})
 
-module.exports = app;
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Healthy',
+  })
+})
+
+app.use('/api/auth', authRoutes)
+app.use('/api/resume', resumeRoutes)
+app.use('/api/interview', interviewRoutes)
+app.use('/api/dashboard', dashboardRoutes)
+app.use('/api/profile', profileRoutes)
+
+app.use(errorMiddleware)
+
+module.exports = app
