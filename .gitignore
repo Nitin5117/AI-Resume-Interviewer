@@ -2,3 +2,10 @@
 # local environment files
 .env
 server/.env
+
+# local environment files
+.env
+**/.env
+.env.*
+server/.env
+client/.env
