@@ -52,7 +52,7 @@ const Profile = () => {
 
   const handleOpenEditModal = () => {
     setFormData({
-      name: profile.user.name || "",
+      name: profile.user.firstname || "",
       email: profile.user.email || "",
     });
 
@@ -179,7 +179,7 @@ const Profile = () => {
               </p>
 
               <h2 className="mt-3 text-3xl font-bold text-white">
-                {user.name || "AI Interview Candidate"}
+                {user.username || "AI Interview Candidate"}
               </h2>
 
               <div className="mt-6 flex flex-col gap-4 text-slate-400 sm:flex-row sm:flex-wrap sm:gap-8">
