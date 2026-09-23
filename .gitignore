@@ -9,3 +9,11 @@ server/.env
 .env.*
 server/.env
 client/.env
+
+# local environment files
+.env
+**/.env
+.env.*
+server/.env
+client/.env
+README.md
