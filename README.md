@@ -1483,3 +1483,4 @@ This project demonstrates understanding of:
 AI Interview Platform — Portfolio Project
 
 Built to demonstrate Full Stack Development, AI Integration, Clean Architecture, and Production-ready Backend Design.
+# ai-interview-platform
